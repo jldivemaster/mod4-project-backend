@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import UserProfile from './UserProfile'
 import MyNotesList from './MyNotesList'
+import Header from './Header'
 
 class App extends React.Component {
 
@@ -25,6 +26,7 @@ class App extends React.Component {
   return (
     <div className="App">
       <header className="App-header">
+      <Header />
         <img src={logo} className="App-logo" alt="logo" />
 
         <UserProfile />
