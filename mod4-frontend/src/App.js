@@ -1,26 +1,73 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import Signin from './component/Signin'
+import NotesContainer from './component/notes_container'
+import UserContainer from './component/user_container'
+import Welcome from './component/user_container'
 
-function App() {
+
+const users_api = 'http://localhost:3000/users'
+const notes_api = 'http://localhost:3000/notes'
+
+class App extends React.Component {
+ constructor() {
+   super()
+   this.state = {
+     users: [],
+     notes: []
+   }
+ }  
+  
+  componentDidMount() {
+    this.fetchUsers();
+    this.fetchNotes()
+  }
+
+  fetchUsers = () => {
+    fetch(users_api)
+    .then(res => res.json())
+    .then(users => {
+      return this.setUsers(users)
+    })
+  }
+
+  fetchNotes = () => {
+    fetch(notes_api)
+    .then(res => res.json())
+    .then(notes => {
+      return this.setNotes(notes)
+    })
+  }
+
+setNotes = (notes) => {
+  this.setState({
+    notes: {notes}
+  })
+}
+
+setUsers = (users) => {
+  this.setState({
+    users: {users}
+  })
+}
+
+render() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Route exact path ='/' component={Signin}/>
+        <Route exact path='/welcome' component={Welcome}/>
+      </Router>
+        <div className="User">
+        <UserContainer users={this.state.users} fetchUsers={this.fetchUsers}/>
+        </div>
+        <div className="Notes">
+        <NotesContainer notes={this.state.notes} fetchNotes={this.fetchNotes}/>
+        </div> 
     </div>
-  );
+    );
+  }
 }
 
 export default App;
